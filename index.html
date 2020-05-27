@@ -6,29 +6,38 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
-  <link rel="stylesheet" href="./assets/index.css">
-  <script src="./axios.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 
 <body>
-  <div class="app">
-    <div>{{ title }}</div>
-    <div>{{ test() }}</div>
+  <div id="app">
+    <div>{{ msg }}</div>
   </div>
 
   <script>
     const vm = new Vue({
-      el: '.app',
+      el: '#app',
       data: {
-        title: 'title'
-      },
-      methods: {
-        test() {
-          return 'test'
+        msg: '风姿绰约、花枝招展',
+        mrDeng: {
+          name: '邓旭明', 
+          age: 80, 
+          height: '140cm', 
+          weight: '100kg'
         }
-      },
+      }
     })
+    // 验证渲染是异步执行
+    vm.msg = "手有余香"
+    console.log(vm.msg, vm.$el.innerText)
+    vm.msg = "肤白貌美"
+    console.log(vm.msg, vm.$el.innerText)
+    vm.msg = "吃货吃吧"
+    console.log(vm.msg, vm.$el.innerText)
+    // 使用宏任务setTimeout
+    setTimeout(() => {
+      console.log(vm.msg, vm.$el.innerText)
+    }, 0)
   </script>
 </body>
 
