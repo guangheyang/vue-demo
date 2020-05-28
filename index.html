@@ -6,38 +6,106 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
-  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
 </head>
 
 <body>
-  <div id="app">
-    <div>{{ msg }}</div>
-  </div>
-
   <script>
-    const vm = new Vue({
-      el: '#app',
-      data: {
-        msg: '风姿绰约、花枝招展',
-        mrDeng: {
-          name: '邓旭明', 
-          age: 80, 
-          height: '140cm', 
-          weight: '100kg'
-        }
+    const data = {
+      name: '数据劫持',
+      age: 18,
+      mobile: {
+        qq: 110
+      },
+      arr: [1, 2, 3]
+    }
+
+    // let value = data.name
+    // Object.defineProperty(data, 'name', {
+    //   // 获取、读
+    //   get() {
+    //     console.log('读')
+    //     return value
+    //   },
+    //   // 获取、写
+    //   // 参数：被重新赋予的值
+    //   set(newVal) {
+    //     value = newVal
+    //     console.log('写')
+    //   }
+    // })
+    // data.name = 'duyi'
+    // console.log(data.name, 'name')
+
+    const arrayProto = Array.prototype;
+    const arrayMethods = Object.create(arrayProto);
+    ['push', 'pop', 'shift', 'unshift', 'sort', 'splice', 'reverse'].forEach(methods => {
+      arrayMethods[methods] = function() {
+        arrayProto[methods].call(this, ...arguments)
+        render()
       }
     })
-    // 验证渲染是异步执行
-    vm.msg = "手有余香"
-    console.log(vm.msg, vm.$el.innerText)
-    vm.msg = "肤白貌美"
-    console.log(vm.msg, vm.$el.innerText)
-    vm.msg = "吃货吃吧"
-    console.log(vm.msg, vm.$el.innerText)
-    // 使用宏任务setTimeout
-    setTimeout(() => {
-      console.log(vm.msg, vm.$el.innerText)
-    }, 0)
+
+    function $set(data, key, value) {
+      if (Array.isArray(data)) {
+        data.splice(key, 1, value)
+      }
+      defineReactive(data, key, value)
+      render()
+      return value
+    }
+
+    function render() {
+      console.log('页面渲染了')
+    }
+
+    function defineReactive(data, key, value) {
+      observer(value)
+      Object.defineProperty(data, key, {
+        get() {
+          console.log('读')
+          return value
+        },
+        set(newVal) {
+          if (newVal === value) {
+            return
+          }
+          render()
+          console.log('写')
+          value = newVal
+        }
+      })
+    }
+
+    function observer(data) {
+      if (Array.isArray(data)) {
+        data.__proto__ = arrayMethods
+        return
+      }
+      if (typeof data === "object") {
+        for(const key in data) {
+          defineReactive(data, key, data[key])
+        }
+      }
+    }
+    observer(data)
+
+    // const oldPush = Array.prototype.push
+    // Array.prototype.push =  function () {
+    //   oldPush.call(this, ...arguments)
+    //   render()
+    // }
+    // console.log(data.age)
+    // data.age = 16
+    // console.log(data.age)
+    // data.mobile.qq = 120
+    // console.log(data.mobile.qq)
+    data.arr.push(4)
+    data.arr.reverse()
+    console.log(data.arr)
+    // const val = $set(data, 'name', 'sex')
+    $set(data.arr, 0, 100)
+    console.log(data.arr, 'val') 
   </script>
 </body>
 
