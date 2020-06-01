@@ -11,22 +11,25 @@
 
 <body>
   <div id="app">
-    <span v-pre>{{ msg }}</span>
-    <span>{{ msg }}</span>
-    <div v-cloak>{{ msg }}</div>
-    <div v-once>{{ msg }}</div>
-    <div v-text="msg"></div>
-    <div v-text="msg">ha{{ msg }}ha</div>
-    <div>ha{{ msg }}ha</div>
+    <template v-if="isShow">
+      <h1>{{ title }}</h1>
+      <p>{{ name }}</p>
+    </template>
+    <h1 v-else-if="noShow">不展示</h1>
+    <p v-if="noShow">noShow</p>
+    <p v-else>v-else</p>
+    <p v-show="isShow">isShow</p>
   </div>
   <script>
     const vm = new Vue({
       el: '#app',
       data: {
-        msg: 'haha'
+        title: 'haha',
+        name: 'yang',
+        isShow: true,
+        noShow: false
       }
     })
-    vm.msg = 'hehe'
   </script>
 </body>
 
