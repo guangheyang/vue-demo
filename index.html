@@ -11,27 +11,22 @@
 
 <body>
   <div id="app">
-    <div v-bind="{name: 'yang', age: '18'}" :class="{ red: isRed }">attr</div>
-    <img :src="url" alt="">
-    <div :class="[{redClass: isRed}, green]" class="red"></div>
-    <div :style="{color: 'red', width: '100px', backgroundColor: 'green'}">绿色</div>
-    <div :style="[redClass, greenClass]">style</div>
+    <button v-on:click="addCounter(1, $event)">点击加 1</button>
+    <button v-on:click="addCounter(2, $event)">点击加 2</button>
+    <p>按钮被点击了 {{ counter }} 次</p>
   </div>
   <script>
     const vm = new Vue({
       el: '#app',
       data: {
-        isRed: true,
-        green: 'greenClass',
-        greenClass: {
-          cursor: 'pointer'
-        },
-        redClass: {
-          color: 'red',
-          fontSize: '16px'
-        },
-        url: 'https://t8.baidu.com/it/u=1484500186,1503043093&fm=79&app=86&size=h300&n=0&g=4n&f=jpeg?sec=1591711207&t=0e523a4ed6367979d45731bfa5d2a464'
-      }
+        counter: 0
+      },
+      methods: {
+        addCounter(num, e) {
+          this.counter += num
+          console.log(e) // 获取事件对象
+        }
+      },
     })
   </script>
 </body>
@@ -39,10 +34,4 @@
 </html>
 
 <style>
-  .redClass {
-    
-  }
-  .greenClass {
-    cursor: pointer;
-  }
 </style>
