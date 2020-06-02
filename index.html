@@ -11,20 +11,37 @@
 
 <body>
   <div id="app">
-    <button v-on:click="addCounter(1, $event)">点击加 1</button>
-    <button v-on:click="addCounter(2, $event)">点击加 2</button>
-    <p>按钮被点击了 {{ counter }} 次</p>
+    <div v-for="(item, index) in arr" :key="index">
+      {{item}}-{{index}}
+    </div>
+    <div v-for="(obj, index) in name">
+      {{obj.name}}
+      <button @click="handleClick(index)">下移</button>
+    </div>
+    <div v-for="(value, keys, index) in object">
+      {{value}},{{keys}},{{index}}
+    </div>
   </div>
   <script>
     const vm = new Vue({
       el: '#app',
       data: {
-        counter: 0
+        arr: [1, 2, 3, 4],
+        name: [
+          { name: '杉杉', age: 18 },
+          { name: '思彤哥', age: 20 },
+          { name: '成哥', age: 22 },
+          { name: '邓哥', age: 88 }
+        ],
+        object: {name: 'yang', age: 16}
       },
       methods: {
-        addCounter(num, e) {
-          this.counter += num
-          console.log(e) // 获取事件对象
+        handleClick(index) {
+          if (index === this.name.length - 1) {
+            index = -1
+          }
+          const deleteItem = this.name.splice(index, 1)
+          this.name.splice(index + 1, 0, ...deleteItem)
         }
       },
     })
