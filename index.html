@@ -11,23 +11,26 @@
 
 <body>
   <div id="app">
-    <template v-if="isShow">
-      <h1>{{ title }}</h1>
-      <p>{{ name }}</p>
-    </template>
-    <h1 v-else-if="noShow">不展示</h1>
-    <p v-if="noShow">noShow</p>
-    <p v-else>v-else</p>
-    <p v-show="isShow">isShow</p>
+    <div v-bind="{name: 'yang', age: '18'}" :class="{ red: isRed }">attr</div>
+    <img :src="url" alt="">
+    <div :class="[{redClass: isRed}, green]" class="red"></div>
+    <div :style="{color: 'red', width: '100px', backgroundColor: 'green'}">绿色</div>
+    <div :style="[redClass, greenClass]">style</div>
   </div>
   <script>
     const vm = new Vue({
       el: '#app',
       data: {
-        title: 'haha',
-        name: 'yang',
-        isShow: true,
-        noShow: false
+        isRed: true,
+        green: 'greenClass',
+        greenClass: {
+          cursor: 'pointer'
+        },
+        redClass: {
+          color: 'red',
+          fontSize: '16px'
+        },
+        url: 'https://t8.baidu.com/it/u=1484500186,1503043093&fm=79&app=86&size=h300&n=0&g=4n&f=jpeg?sec=1591711207&t=0e523a4ed6367979d45731bfa5d2a464'
       }
     })
   </script>
@@ -36,7 +39,10 @@
 </html>
 
 <style>
-  [v-cloak] {
-    display: none;
+  .redClass {
+    
+  }
+  .greenClass {
+    cursor: pointer;
   }
 </style>
