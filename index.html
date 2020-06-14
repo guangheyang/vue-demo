@@ -11,39 +11,48 @@
 
 <body>
   <div id="app">
-    <div v-for="(item, index) in arr" :key="index">
-      {{item}}-{{index}}
+    输入框
+    <input v-model="message">
+    <p>Message 为: {{ message }}</p>
+    type为checkbox
+    <input 
+    type="checkbox" 
+    id="checkbox" 
+    v-model="checked"
+    />
+    <label for="checkbox">{{ checked }}</label>
+    <div>
+    复选框
+      <input type="checkbox" id="cheng" value="成哥" v-model="checkedNames">
+      <label for="cheng">成哥</label>
+    
+      <input type="checkbox" id="deng" value="邓哥" v-model="checkedNames">
+      <label for="deng">邓哥</label>
+      
+      <input type="checkbox" id="tong" value="思彤哥" v-model="checkedNames">
+      <label for="tong">思彤哥</label>
+      <br>
+      <span>被选中的人有: {{ checkedNames }}</span>
     </div>
-    <div v-for="(obj, index) in name">
-      {{obj.name}}
-      <button @click="handleClick(index)">下移</button>
-    </div>
-    <div v-for="(value, keys, index) in object">
-      {{value}},{{keys}},{{index}}
-    </div>
+    <p >多行文本为：{{ text }}</p>
+    <textarea v-model="text" placeholder="添加文本"></textarea>
+    <select v-model="selected">
+      <option>A</option>
+      <option>B</option>
+      <option>C</option>
+    </select>
+    <span>选择: {{ selected === '请选择' ? '' : selected }}</span>
   </div>
   <script>
     const vm = new Vue({
       el: '#app',
       data: {
-        arr: [1, 2, 3, 4],
-        name: [
-          { name: '杉杉', age: 18 },
-          { name: '思彤哥', age: 20 },
-          { name: '成哥', age: 22 },
-          { name: '邓哥', age: 88 }
-        ],
-        object: {name: 'yang', age: 16}
-      },
-      methods: {
-        handleClick(index) {
-          if (index === this.name.length - 1) {
-            index = -1
-          }
-          const deleteItem = this.name.splice(index, 1)
-          this.name.splice(index + 1, 0, ...deleteItem)
-        }
-      },
+        message: '成为大佬',
+        checked: true,
+        checkedNames:  [],
+        text: '',
+        selected: ''
+      }
     })
   </script>
 </body>
