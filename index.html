@@ -10,11 +10,13 @@
 <body>
     <div id="app">
       <div>
-       <span>{{ msgReverse }}</span>
-       <br>
-       <span>{{ msgMethod() }}</span>
-       <br>
-       <span>{{ desc }}</span>
+        <span>{{ msg }}</span>
+        <br>
+        <span>{{ text }}</span>
+        <br>
+        <span>{{ desc }}</span>
+        <br>
+        <span>{{ obj }}</span>
       </div>
     </div>
 </body>
@@ -26,32 +28,55 @@
         el: '#app',
         data: {
           msg: '河银李，啊好你',
-          name: '李银河'
+          text: '王小波',
+          desc: {
+            name: 'yang',
+            age: 20,
+            address: '杭州'
+          },
+          obj: {
+            name: 'guang'
+          }
         },
         methods: {
-          msgMethod() {
-            console.log('methods');
-            return this.msg.split('').reverse().join('');
+          textChange() {
+            console.log('textChange');
           }
         },
-        computed: {
-          someComputed: function() {
-            return 'xxx';
+        watch: {
+          msg: function(newVal, oldVal) {
+            console.log('newVal:' + `${ newVal }`);
+            console.log('oldVal:' + `${ oldVal }`);
           },
-          msgReverse() {
-            console.log('computed')
-            return this.msg.split('').reverse().join('');
-          },
+          text: 'textChange',
           desc: {
-            get() {
-              console.log('计算属性被读取了')
-              return `姓名:${this.name}`
+            handler() {
+              console.log('desc的值改变了')
             },
-            set(newVal) {
-              console.log('计算属性被设置啦', newVal)
+            deep: true,
+            immediate: true // 立即执行handler回调函数
+          },
+          'obj.name': ['textChange', function() {
+            console.log('obj')
+          },{
+            handler() {
+              console.log('obj的值改变了')
             }
-          }
-        }
-        
+          }]
+        },
+    })
+    vm.$watch('msg', function () {
+      console.log('使用$watch的msg改变了')
+    }, {
+      deep: true,
+      immediate: true
+    })
+
+    const unwatch = vm.$watch('msg', function (newVal, oldVal) {
+      if (newVal !== oldVal) {
+        console.log('newVal === oldVal')
+        return
+      }
+      console.log('newVal !== oldVal')
     })
 </script>
