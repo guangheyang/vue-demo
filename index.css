@@ -1,71 +1,68 @@
 * {
-  margin: 0;
   padding: 0;
+  margin: 0;
+}
+
+li {
   list-style: none;
-  font-size: 14px;
 }
+
 #app {
-  width: 500px;
-  padding: 10px;;
-  margin: 30px auto;
+  position: relative;
+  width: 284px;
+  margin: 50px auto;
 }
 
-.control {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.username,
+.mail {
+  width: 284px;
   margin-bottom: 10px;
-}
-
-.control .search {
-  display: inline-block;
-  width: 300px;
-  height: 25px;
-  padding-left: 10px;
-  border-radius: 4px;
-  border: 1px solid #ccc;
-}
-
-.control .option {
-  color: #3e86f4;
+  border: 1px solid #ddd;
   font-size: 14px;
-  margin-left: 10px;
-  padding: 0 5px;
-  border-radius: 4px;
+  color: #666;
+}
+
+.username input,
+.mail input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 100%;
+  padding: 10px 8px;
+  border: none;
+  outline: none;
+}
+
+.upload-btn,
+.show-btn,
+.test-btn {
+  width: 284px;
+  height: 40px;
+  margin-bottom: 10px;
+  line-height: 40px;
+  color: #fff;
+  background-color: #3f89ec;
+  border-radius: 3px;
+  text-align: center;
   cursor: pointer;
 }
 
-.control .option.active {
-  color: #fff;
-  background-color: #3e86f4;
+.person-list {
+  width: 284px;
+  border: 1px solid #ddd;
+  border-bottom: none;
 }
-
 
 .person {
-  display: flex;
-  align-items: center;
-  padding-bottom: 10px;
-  padding-top: 10px;
-  border-bottom: 1px solid #ccc;
+  padding: 8px;
+  border-bottom: 1px solid #ddd;
+  font-size: 12px;
 }
 
-.avatar {
-  margin-right: 10px;
-  vertical-align: middle;
+.person span:first-of-type {
+  padding-right: 8px;
+  border-right: 1px solid #ddd;
 }
 
-.avatar img {
-  width: 50px;
-  height: 50px;
-}
-
-.content {
-  display: flex;
-  flex-direction: column;
-}
-
-.content .des {
-  color: #aaa;
-  font-size: 10px;
-  margin-top: 5px;
+.person span:last-of-type {
+  padding-left: 8px;
 }

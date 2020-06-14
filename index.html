@@ -5,20 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-    <!-- <link rel="stylesheet" href="./index.css"> -->
+    <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+    <link rel="stylesheet" href="./index.css">
 </head>
 <body>
     <div id="app">
-      <div>
-        <span>{{ msg }}</span>
-        <br>
-        <span>{{ text }}</span>
-        <br>
-        <span>{{ desc }}</span>
-        <br>
-        <span>{{ obj }}</span>
+      <div class="username">
+        <input type="text" placeholder="用户名" v-model="name">
       </div>
+      <div class="mail">
+        <input type="text" placeholder="邮箱" v-model="mail">
+      </div>
+      <div class="upload-btn" @click="handleUpload">上传</div>
+      <div class="test-btn" @click="handleTest">jsonp测试</div>
+      <div class="show-btn" @click="handleShow">显示人物信息</div>
+      <ul class="person-list" v-if="personList.length">
+        <li class="person" v-for="person in personList">
+          <span>{{ person.name }}</span>
+          <span>{{ person.mail }}</span>
+        </li>
+      </ul>
     </div>
+    
 </body>
 </html>
 
@@ -27,56 +35,40 @@
     const vm = new Vue({
         el: '#app',
         data: {
-          msg: '河银李，啊好你',
-          text: '王小波',
-          desc: {
-            name: 'yang',
-            age: 20,
-            address: '杭州'
-          },
-          obj: {
-            name: 'guang'
-          }
+          name: '',
+          mail: '',
+          msg: '',
+          personList: []
         },
         methods: {
-          textChange() {
-            console.log('textChange');
+          handleUpload() {
+            this.$http.post('https://developer.duyiedu.com/vue/setUserInfo', {
+              name: this.name,
+              mail: this.mail
+            }).then(res => {
+              this.msg = res.body.msg
+            }).catch(error => {
+              this.msg = error.body.msg
+            })
+          },
+          handleShow() {
+            this.$http.get('https://developer.duyiedu.com/vue/getUserInfo').then(res => {
+              this.personList = res.body.data
+            })
+          },
+          handleTest() {
+            this.$http.jsonp('https://developer.duyiedu.com/vue/jsonp').then(res => {
+              alert('操作成功')
+              console.log(res)
+            })
           }
         },
         watch: {
-          msg: function(newVal, oldVal) {
-            console.log('newVal:' + `${ newVal }`);
-            console.log('oldVal:' + `${ oldVal }`);
-          },
-          text: 'textChange',
-          desc: {
-            handler() {
-              console.log('desc的值改变了')
-            },
-            deep: true,
-            immediate: true // 立即执行handler回调函数
-          },
-          'obj.name': ['textChange', function() {
-            console.log('obj')
-          },{
-            handler() {
-              console.log('obj的值改变了')
-            }
-          }]
-        },
-    })
-    vm.$watch('msg', function () {
-      console.log('使用$watch的msg改变了')
-    }, {
-      deep: true,
-      immediate: true
-    })
-
-    const unwatch = vm.$watch('msg', function (newVal, oldVal) {
-      if (newVal !== oldVal) {
-        console.log('newVal === oldVal')
-        return
-      }
-      console.log('newVal !== oldVal')
+          msg() {
+            if (this.msg === '') return
+            alert(this.msg);
+            this.msg = ''
+          }
+        }
     })
 </script>
