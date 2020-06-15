@@ -30,73 +30,11 @@
 </html>
 
 <script>
-    // 请求拦截器
-    axios.interceptors.request.use(config => {
-      console.log(config)
-      return config;
-    })
-    // 响应拦截器
-    const interceptors = axios.interceptors.response.use(response => {
-      if (response.status === 200) {
-        return response.data;
-      } else {
-        //...
-      }
-    }, error => {
-      if(error.response) {
-        console.log('响应时错误')
-      } else if(error.request) {
-        console.log('请求时错误')
-      }
-    })
-    // 移除拦截器
-    axios.interceptors.response.eject(interceptors);
-
-    axios.defaults.baseURL = 'https://developer.duyiedu.com/vue'
     const vm = new Vue({
-        el: '#app',
-        data: {
-          name: '',
-          mail: '',
-          msg: '',
-          personList: []
-        },
-        methods: {
-          handleUpload() {
-            const {name, mail} = this
-            axios.post('/setUserInfo', {name, mail}, {
-              baseURL: 'https://developer.duyiedu.com/vue'
-            }).then(res => {
-              console.log(res)
-              this.msg = res.data.msg
-            })
-          },
-          handleShow() {
-            // axios({
-            //   methods: 'get',
-            //   baseURL: 'https://developer.duyiedu.com/vue',
-            //   url: '/getUserInfo'
-            // }).then(res => {
-            //   console.log(res)
-            //   this.msg = res.data.msg
-            //   this.personList = res.data.data
-            // })
-            axios.get('/getUserInfo').then(res => {
-              console.log(res)
-              this.msg = res.data.msg
-              this.personList = res.data.data
-            })
-          },
-          handleTest() {
-            
-          }
-        },
-        watch: {
-          msg() {
-            if (this.msg === '') return
-            alert(this.msg);
-            this.msg = ''
-          }
-        }
+      el: '#app',
+      data: {
+
+      },
+      template: `<div id="app-10"></div>`
     })
 </script>
