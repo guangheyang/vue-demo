@@ -6,7 +6,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
-  <link rel="stylesheet" href="./index.css">
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
@@ -14,46 +13,82 @@
 <body>
 
   <div id="app">
-    <my-list :list="list"></my-list>
-    <my-list></my-list>
+    <span>错误示例</span>
+    <!-- father: {{ count }}
+    <button @click="count++">点击father</button>
+    <my-count :count="count"></my-count>
+    father: {{ array }}
+    <button @click="array.push(4)">点击father</button>
+    <my-array :array="array"></my-array>
+    <span>改正方案</span>
+    father: {{ count }}
+    <button @click="count++">点击father</button>
+    <count :count="count"></count> -->
+    father: {{ array }}
+    <button @click="array.push(4)">点击father</button>
+    <my-array :array="array"></my-array>
   </div>
 
   <script>
-    Vue.component('my-list', {
-      // props: ['list'],
-      // props: {
-      //   list: [Array, String]
-      // },
+    Vue.component('my-array', {
       props: {
-        list: {
-          type: Array,
-          default: function () {
-            return [{
-              name: 'haha'
-            }, {
-              name: 'hehe'
-            }]
-          },
-          required: true,
-          validator(prop) {
-            return prop.length > 3
-          }
+        array: Array
+      },
+      template: `
+      <div>
+        son: {{ array }}
+        <button @click="array.push(4)">点击son</button>
+      </div>
+      `
+    })
+    Vue.component('array', {
+      props: {
+        array: Array
+      },
+      data() {
+        return {
+          myArray: [...this.array] // 深度拷贝
         }
       },
       template: `
-      <ul>
-        <li v-for="item in list">{{ item.name }}</li>  
-      </ul>
+      <div>
+        son: {{ myArray }}
+        <button @click="myArray.push(4)">点击son</button>
+      </div>
+      `
+    })
+    Vue.component('my-count', {
+      props: {
+        count: Number
+      },
+      template: `
+      <div>
+        son: {{ count }}
+        <button @click="count++">点击son</button>
+      </div>
+      `
+    })
+    Vue.component('count', {
+      props: {
+        count: Number
+      },
+      data() {
+        return {
+          myCount: this.count
+        }
+      },
+      template: `
+      <div>
+        son: {{ myCount }}
+        <button @click="myCount++">点击son</button>
+      </div>
       `
     })
      const vm = new Vue({
       el: '#app',
       data: {
-        list: [{
-          name: 'yang'
-        }, {
-          name: 'qq'
-        }]
+        count: 0,
+        array: [1, 2, 3]
       }
     })
   </script>
