@@ -6,50 +6,65 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+  <link rel="stylesheet" href="./index.css">
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 </head>
 
 <body>
 
   <div id="app">
-    <list></list>
-    <nav-list></nav-list>
-    <my-component></my-component>
-    <button-counter></button-counter>
-    <button-counter></button-counter>
-
+    <video-list :video-list="videoList"></video-list>
   </div>
 
   <script>
-    Vue.component('list', {
-      props:['msg'], 
-      template: `<div>全局组件</div>`
+    Vue.component('video-list', {
+      props: ['videoList'],
+      template: `
+        <div class="video-list">
+          <video-item
+            v-for="video in videoList"
+            :poster="video.poster"
+            :play="video.play"
+            :rank="video.rank"
+            :title="video.title"
+          >
+          </video-item>  
+        </div>
+      `
     })
-    Vue.component('MyComponent', {
-      template: `<div>大驼峰式命名的MyComponent组件</div>`
-    })
-    Vue.component('button-counter', {
-      data() {
-        return {
-          count: 0
-        }
-      },
-      template: `<button @click="count ++">点击了{{count}}次</button>`
-    })
-    const vm = new Vue({
+
+    Vue.component('video-item', {
+      props: ['poster', 'play', 'rank', 'title'],
+      template: `
+        <div class="video-item">
+          <div class="poster">
+            <img :src="poster" alt="">
+            <div class="info">
+              <div class="play">{{ play }}</div>
+              <div class="rank">{{ rank }}</div>
+            </div>
+          </div>
+          <div class="title">{{ title }}</div>
+        </div>
+      `
+    });
+     const vm = new Vue({
       el: '#app',
       data: {
-        msg: 'msg'
+        videoList: [],
       },
-      components: {
-        'nav-list': {
-          template:  `
-            <div>局部组件</div>
-          `
-        }
-      }
+      created () {
+        axios.get('https://developer.duyiedu.com/vue/bz/video', {
+          params: {
+            start: 0,
+            offset: 12
+          }
+        }).then(res => {
+          this.videoList = res.data.data
+        })
+      },
     })
-    
   </script>
 </body>
 
