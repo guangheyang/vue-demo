@@ -14,56 +14,47 @@
 <body>
 
   <div id="app">
-    <video-list :video-list="videoList"></video-list>
+    <my-list :list="list"></my-list>
+    <my-list></my-list>
   </div>
 
   <script>
-    Vue.component('video-list', {
-      props: ['videoList'],
+    Vue.component('my-list', {
+      // props: ['list'],
+      // props: {
+      //   list: [Array, String]
+      // },
+      props: {
+        list: {
+          type: Array,
+          default: function () {
+            return [{
+              name: 'haha'
+            }, {
+              name: 'hehe'
+            }]
+          },
+          required: true,
+          validator(prop) {
+            return prop.length > 3
+          }
+        }
+      },
       template: `
-        <div class="video-list">
-          <video-item
-            v-for="video in videoList"
-            :poster="video.poster"
-            :play="video.play"
-            :rank="video.rank"
-            :title="video.title"
-          >
-          </video-item>  
-        </div>
+      <ul>
+        <li v-for="item in list">{{ item.name }}</li>  
+      </ul>
       `
     })
-
-    Vue.component('video-item', {
-      props: ['poster', 'play', 'rank', 'title'],
-      template: `
-        <div class="video-item">
-          <div class="poster">
-            <img :src="poster" alt="">
-            <div class="info">
-              <div class="play">{{ play }}</div>
-              <div class="rank">{{ rank }}</div>
-            </div>
-          </div>
-          <div class="title">{{ title }}</div>
-        </div>
-      `
-    });
      const vm = new Vue({
       el: '#app',
       data: {
-        videoList: [],
-      },
-      created () {
-        axios.get('https://developer.duyiedu.com/vue/bz/video', {
-          params: {
-            start: 0,
-            offset: 12
-          }
-        }).then(res => {
-          this.videoList = res.data.data
-        })
-      },
+        list: [{
+          name: 'yang'
+        }, {
+          name: 'qq'
+        }]
+      }
     })
   </script>
 </body>
