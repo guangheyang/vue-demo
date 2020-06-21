@@ -13,27 +13,81 @@
 <body>
 
   <div id="app">
-    <!-- 非prop特性会替换/合并（class、style）已有特性 -->
-    <my-cmp b="1" a="2" class="hah"></my-cmp>
+    <!-- <div :style="{fontSize:postFontSize + 'em'}">
+      <blog-post
+        v-for="post in postList"
+        :post="post"
+        @enlarge-text="onEnlargeText"
+        :key="post.id"
+      ></blog-post>
+    </div> -->
+    <!-- <base-input @focus="onFocus" @blur="onBlur"></base-input> -->
+    <base-checkbox :checked="checked" @change="checked = $event"></base-checkbox>
   </div>
 
   <script>
-     Vue.component('my-cmp', {
-      props: ['a'],
-      // inheritAttrs: false, // 是否继承特性
-      mounted () {
-        console.log(this.$attrs);
+    Vue.component('base-input', {
+      mounted() {
+        console.log(this.$listeners)
+      },
+      template:  `
+      <label>
+      姓名：
+      <input type="text" v-on="$listeners"/>
+      </label>
+      `
+    })
+     Vue.component('blog-post', {
+      props: {
+        post: Object
       },
       template: `
-        <label>
-          选择：
-          <input v-bind="$attrs" />
-        </label>
+      <div>
+        <h3>{{ post.title }}</h3>
+        <button @click="$emit('enlarge-text')">放大字号</button>
+        <div>{{ post.content }}</div>
+      </div>
+      `
+    })
+    Vue.component('base-checkbox', {
+      props: {
+        checked: Boolean
+      },
+      template: `
+        <input type="checkbox" :checked="checked" @change="$emit('change', $event.target.checked)" />
       `
     })
      const vm = new Vue({
       el: '#app',
       data: {
+        postFontSize: 1,
+        postList: [{
+          title: '前端博客',
+          content: '内容',
+          id: 0
+        },
+        {
+          title: '前端博客1',
+          content: '内容',
+          id: 1
+        },
+        {
+          title: '前端博客2',
+          content: '内容',
+          id: 2
+        }],
+        checked: true
+      },
+      methods: {
+        onEnlargeText(e) {
+          this.postFontSize += e;
+        },
+        onFocus() {
+          console.log('onFocus')
+        },
+        onBlur() {
+          console.log('onBlur')
+        }
       }
     })
   </script>
