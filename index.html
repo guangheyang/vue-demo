@@ -13,81 +13,76 @@
 <body>
 
   <div id="app">
-    <!-- <div :style="{fontSize:postFontSize + 'em'}">
-      <blog-post
-        v-for="post in postList"
-        :post="post"
-        @enlarge-text="onEnlargeText"
-        :key="post.id"
-      ></blog-post>
-    </div> -->
-    <!-- <base-input @focus="onFocus" @blur="onBlur"></base-input> -->
-    <base-checkbox :checked="checked" @change="checked = $event"></base-checkbox>
+    <my-slot>写在组件标签中的文字
+      <!-- 名字随意 -->
+      <template v-slot:default="slotProps">
+        {{ slotProps }}
+      </template>
+    </my-slot>
+    <my-button>Button</my-button>
+    <my-v-slot>
+      <template slot="header">
+        <h1>头部</h1>
+      </template>
+
+      <template>
+        <p>内容</p>
+        <p>内容</p>
+      </template>
+
+      <template slot="footer">
+        <p>底部</p>
+      </template>
+    </my-v-slot>
   </div>
 
   <script>
-    Vue.component('base-input', {
-      mounted() {
-        console.log(this.$listeners)
-      },
-      template:  `
-      <label>
-      姓名：
-      <input type="text" v-on="$listeners"/>
-      </label>
-      `
-    })
-     Vue.component('blog-post', {
-      props: {
-        post: Object
+    Vue.component('my-slot', {
+      data() {
+        return {
+          name: 'yang',
+          user: {
+            name: 'qq',
+            age: 18
+          }
+        }
       },
       template: `
       <div>
-        <h3>{{ post.title }}</h3>
-        <button @click="$emit('enlarge-text')">放大字号</button>
-        <div>{{ post.content }}</div>
+        xxx
+        <slot v-bind:user="user"></slot>
       </div>
       `
     })
-    Vue.component('base-checkbox', {
-      props: {
-        checked: Boolean
-      },
+    Vue.component('my-button', {
       template: `
-        <input type="checkbox" :checked="checked" @change="$emit('change', $event.target.checked)" />
+      <button>
+        <slot>Submit</slot>
+      </button>
+      `
+    })
+    Vue.component('my-v-slot', {
+      template: `
+      <div class="container">
+        <header>
+          <slot name="header"></slot>
+        </header>
+        <main>
+          <slot></slot>
+        </main>
+        <footer>
+          <slot name="footer"></slot>
+        </footer>
+      </div>
       `
     })
      const vm = new Vue({
       el: '#app',
       data: {
-        postFontSize: 1,
-        postList: [{
-          title: '前端博客',
-          content: '内容',
-          id: 0
-        },
-        {
-          title: '前端博客1',
-          content: '内容',
-          id: 1
-        },
-        {
-          title: '前端博客2',
-          content: '内容',
-          id: 2
-        }],
-        checked: true
+        
       },
       methods: {
-        onEnlargeText(e) {
-          this.postFontSize += e;
-        },
-        onFocus() {
-          console.log('onFocus')
-        },
-        onBlur() {
-          console.log('onBlur')
-        }
+       
       }
     })
   </script>
