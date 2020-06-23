@@ -13,76 +13,82 @@
 <body>
 
   <div id="app">
-    <my-slot>写在组件标签中的文字
-      <!-- 名字随意 -->
-      <template v-slot:default="slotProps">
-        {{ slotProps }}
-      </template>
-    </my-slot>
-    <my-button>Button</my-button>
-    <my-v-slot>
-      <template slot="header">
-        <h1>头部</h1>
-      </template>
-
-      <template>
-        <p>内容</p>
-        <p>内容</p>
-      </template>
-
-      <template slot="footer">
-        <p>底部</p>
-      </template>
-    </my-v-slot>
+    <button
+      v-for="page in pages"
+      :key="page.id"
+      @click="cmpPage = page.cmp"
+    >{{ page.name }}</button>
+    <keep-alive>
+      <component :is="cmpPage"></component>
+    </keep-alive>
   </div>
 
   <script>
-    Vue.component('my-slot', {
+    Vue.component('cmp-post', {
       data() {
         return {
-          name: 'yang',
-          user: {
-            name: 'qq',
-            age: 18
-          }
+          posts: [{
+            title: 'html',
+            content: {
+              template: `<div>html5</div>`
+            },
+            id: 11
+          }, {
+            title: 'css',
+            content: {
+              template: `<div>css3</div>`
+            },
+            id: 12
+          },{
+            title: 'js',
+            content: {
+              template: `<div>es6</div>`
+            },
+            id: 13
+          }],
+          postCmp: ''
         }
+      },
+      created() {
+        this.postCmp = this.posts[0].content
+      },
+      activated() {
+        console.log('keep-alive被激活')
+      },
+      deactivated() {
+        console.log('keep-alive被停用')
       },
       template: `
       <div>
-        xxx
-        <slot v-bind:user="user"></slot>
-      </div>
-      `
+        <button
+          v-for="post in posts"
+          :key="post.id"
+          @click="postCmp = post.content"
+        >{{ post.title }}</button>
+        <keep-alive>
+          <component :is="postCmp"></component>
+        </keep-alive>
+      </div>`
     })
-    Vue.component('my-button', {
+    Vue.component('cmp-more', {
       template: `
-      <button>
-        <slot>Submit</slot>
-      </button>
-      `
-    })
-    Vue.component('my-v-slot', {
-      template: `
-      <div class="container">
-        <header>
-          <slot name="header"></slot>
-        </header>
-        <main>
-          <slot></slot>
-        </main>
-        <footer>
-          <slot name="footer"></slot>
-        </footer>
-      </div>
-      `
+      <div>more</div>`
     })
      const vm = new Vue({
       el: '#app',
-      data: {
-        
-      },
-      methods: {
-       
+      data() {
+        return {
+          cmpPage: 'cmp-post',
+          pages: [{
+            name: '博客',
+            cmp: 'cmp-post',
+            id: 0
+          }, {
+            name: '更多',
+            cmp: 'cmp-more',
+            id: 1
+          }]
+        }
       }
     })
   </script>
