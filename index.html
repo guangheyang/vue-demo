@@ -6,80 +6,48 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
-  <link rel="stylesheet" href="./pikaday.css">
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <script src="./pikaday.js"></script>
 </head>
 
 <body>
 
   <div id="app">
-    <cmp-post>
-      <cmp-more>
-        <cmp-a></cmp-a>
-      </cmp-more>
-    </cmp-post>
-    <pikaday></pikaday>
+    <my-cmp @click="fn"></my-cmp>
+    <my-bus></my-bus>
   </div>
 
   <script>
-    Vue.component('pikaday', {
-      mounted() {
-        this.picker = new Pikaday({
-          field: this.$refs.input,
-          format: 'YYYY-MM-DD'
-        })
-        this.$on('hook: beforeDestroy', () => {
-          picker.destroy()
-        })
-      },
-      beforeDestroy() {
-        // this.picker.destroy()
-      },
-      template:  `
-      <div>
-        <input type="text" ref="input" />
-        <button @click="$destroy()">销毁自己</button>
-      </div>`
-    })
-
-    Vue.component('cmp-post', {
-      provide() {
-        return {
-          age: this.age
-        }
-      },
+    Vue.prototype.$bus = new Vue();
+    Vue.component('my-cmp', {
       data() {
         return {
-          age: 18,
-          share: 'share'
+          name: 'qq'
+        }
+      },
+      methods: {
+        onClick() {
+          this.$listeners.click(this.name)
+          // console.log(this.$listeners)
+          this.$bus.$emit('bus', this.name)
         }
       },
       template: `
-      <div>
-        <slot></slot>
-      </div>`
+      <div @click="onClick">my-cmp</div>`
     })
-    Vue.component('cmp-more', {
+    Vue.component('my-bus', {
       mounted() {
-        console.log(this.$parent.share)
+        this.$bus.$on('bus', (val) => {
+          console.log(val)
+        })
+      },
+      methods: {
+        onClick() {
+          // this.$listeners.click(this.name)
+          // console.log(this.$listeners)
+        }
       },
       template: `
-      <div>
-        <slot></slot>
-      </div>`
-    })
-    Vue.component('cmp-a', {
-      inject: ['age'],
-      mounted() {
-        console.log(this.age)
-        console.log(this.$parent.share)
-        console.log(this.$root.name)
-      },
-      template: `
-      <div>
-        <slot></slot>
-      </div>`
+      <div @click="onClick">my-cmp</div>`
     })
      const vm = new Vue({
       el: '#app',
@@ -87,7 +55,15 @@
         return {
           name: 'yang'
         }
-      }
+      },
+      mounted() {
+        console.log(this.$children)
+      },
+      methods: {
+        fn(name) {
+          console.log('名字：'+ name)
+        }
+      },
     })
   </script>
 </body>
