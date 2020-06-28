@@ -6,88 +6,86 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <title>Document</title>
+  <link rel="stylesheet" href="./pikaday.css">
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
-  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="./pikaday.js"></script>
 </head>
 
 <body>
 
   <div id="app">
-    <button
-      v-for="page in pages"
-      :key="page.id"
-      @click="cmpPage = page.cmp"
-    >{{ page.name }}</button>
-    <keep-alive>
-      <component :is="cmpPage"></component>
-    </keep-alive>
+    <cmp-post>
+      <cmp-more>
+        <cmp-a></cmp-a>
+      </cmp-more>
+    </cmp-post>
+    <pikaday></pikaday>
   </div>
 
   <script>
+    Vue.component('pikaday', {
+      mounted() {
+        this.picker = new Pikaday({
+          field: this.$refs.input,
+          format: 'YYYY-MM-DD'
+        })
+        this.$on('hook: beforeDestroy', () => {
+          picker.destroy()
+        })
+      },
+      beforeDestroy() {
+        // this.picker.destroy()
+      },
+      template:  `
+      <div>
+        <input type="text" ref="input" />
+        <button @click="$destroy()">销毁自己</button>
+      </div>`
+    })
+
     Vue.component('cmp-post', {
-      data() {
+      provide() {
         return {
-          posts: [{
-            title: 'html',
-            content: {
-              template: `<div>html5</div>`
-            },
-            id: 11
-          }, {
-            title: 'css',
-            content: {
-              template: `<div>css3</div>`
-            },
-            id: 12
-          },{
-            title: 'js',
-            content: {
-              template: `<div>es6</div>`
-            },
-            id: 13
-          }],
-          postCmp: ''
+          age: this.age
         }
       },
-      created() {
-        this.postCmp = this.posts[0].content
-      },
-      activated() {
-        console.log('keep-alive被激活')
-      },
-      deactivated() {
-        console.log('keep-alive被停用')
+      data() {
+        return {
+          age: 18,
+          share: 'share'
+        }
       },
       template: `
       <div>
-        <button
-          v-for="post in posts"
-          :key="post.id"
-          @click="postCmp = post.content"
-        >{{ post.title }}</button>
-        <keep-alive>
-          <component :is="postCmp"></component>
-        </keep-alive>
+        <slot></slot>
       </div>`
     })
     Vue.component('cmp-more', {
+      mounted() {
+        console.log(this.$parent.share)
+      },
       template: `
-      <div>more</div>`
+      <div>
+        <slot></slot>
+      </div>`
+    })
+    Vue.component('cmp-a', {
+      inject: ['age'],
+      mounted() {
+        console.log(this.age)
+        console.log(this.$parent.share)
+        console.log(this.$root.name)
+      },
+      template: `
+      <div>
+        <slot></slot>
+      </div>`
     })
      const vm = new Vue({
       el: '#app',
       data() {
         return {
-          cmpPage: 'cmp-post',
-          pages: [{
-            name: '博客',
-            cmp: 'cmp-post',
-            id: 0
-          }, {
-            name: '更多',
-            cmp: 'cmp-more',
-            id: 1
-          }]
+          name: 'yang'
         }
       }
     })
