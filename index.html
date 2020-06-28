@@ -12,42 +12,58 @@
 <body>
 
   <div id="app">
-    <my-cmp @click="fn"></my-cmp>
-    <my-bus></my-bus>
+    <my-cmp></my-cmp>
   </div>
 
   <script>
-    Vue.prototype.$bus = new Vue();
-    Vue.component('my-cmp', {
+    const mixin = {
       data() {
         return {
-          name: 'qq'
+          a: 'a'
         }
       },
-      methods: {
-        onClick() {
-          this.$listeners.click(this.name)
-          // console.log(this.$listeners)
-          this.$bus.$emit('bus', this.name)
-        }
-      },
-      template: `
-      <div @click="onClick">my-cmp</div>`
-    })
-    Vue.component('my-bus', {
       mounted() {
-        this.$bus.$on('bus', (val) => {
-          console.log(val)
-        })
+        console.log('mixin')
       },
-      methods: {
-        onClick() {
-          // this.$listeners.click(this.name)
-          // console.log(this.$listeners)
+    }
+    Vue.component('my-cmp', {
+      option: 'options',
+      mixins: [mixin],
+      data() {
+        return {
+          a: 'b'
         }
       },
+      mounted() {
+        console.log(this.a)
+      },
       template: `
-      <div @click="onClick">my-cmp</div>`
+        <div>my-cmpA</div>
+      `
+    })
+    Vue.component('my-cmpB', {
+      mixins: ['mixin'],
+      data() {
+        return {
+          // a: 'a'
+        }
+      },
+      mounted() {
+        console.log(this.a)
+      },
+      template: `
+        <div>my-cmpB</div>
+      `
+    })
+    Vue.mixin({
+      created() {
+        const option = this.$options.option
+
+        if (option) {
+          console.log(option)
+        }
+        console.log('全局混入')
+      }
     })
      const vm = new Vue({
       el: '#app',
@@ -55,9 +71,6 @@
         return {
           name: 'yang'
         }
-      },
-      mounted() {
-        console.log(this.$children)
       },
       methods: {
         fn(name) {
