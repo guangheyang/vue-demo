@@ -12,71 +12,109 @@
 <body>
 
   <div id="app">
-    <my-cmp></my-cmp>
+    <!-- <my-cmp v-focus></my-cmp> -->
+    <input type="text" v-focus:src.x.y="name" v-myshow="show" v-mymodel="content" v-slice:[slicenum].number="content" >
+    {{ content }}
   </div>
 
   <script>
-    const mixin = {
-      data() {
-        return {
-          a: 'a'
-        }
-      },
-      mounted() {
-        console.log('mixin')
-      },
-    }
-    Vue.component('my-cmp', {
-      option: 'options',
-      mixins: [mixin],
-      data() {
-        return {
-          a: 'b'
-        }
-      },
-      mounted() {
-        console.log(this.a)
-      },
-      template: `
-        <div>my-cmpA</div>
-      `
-    })
-    Vue.component('my-cmpB', {
-      mixins: ['mixin'],
-      data() {
-        return {
-          // a: 'a'
-        }
-      },
-      mounted() {
-        console.log(this.a)
-      },
-      template: `
-        <div>my-cmpB</div>
-      `
-    })
-    Vue.mixin({
-      created() {
-        const option = this.$options.option
+    Vue.directive('focus', {
+      bind(el, binding, vnode) {
+        console.log(el)
+        console.log(binding.name)
+        console.log(binding.value)
+        console.log(binding.expression)
+        console.log(binding.arg)
+        console.log(binding.modifiers)
+        console.log(binding)
 
-        if (option) {
-          console.log(option)
-        }
-        console.log('全局混入')
+        console.log(vnode.context)
+        console.log('bind')
+      },
+      inserted(el) {
+        console.log('inserted')
+      },
+      update(el, binding) {
+        console.log(binding.oldValue)
+        console.log('update')
+      },
+      componentUpdated() {
+        console.log('componentUpdate')
+      },
+      unbind() {
+        console.log('unbind')
       }
     })
-     const vm = new Vue({
+    Vue.component('my-cmp', {
+      template: `
+      <div><p>my-cmp</p></div>
+      `
+    })
+    // 模拟v-show
+    Vue.directive('myshow', {
+      bind(el, binding) {
+        const { value } = binding;
+        const display = value ? '' : 'none';
+        el.style.display = display;
+      },
+      update(el, binding) {
+        const { value } = binding;
+        const display = value ? '' : 'none';
+        el.style.display = display;
+      }
+    })
+
+    // 模拟v-model
+    // 1.通过绑定的数据，给元素设置value
+    // 2.当触发input事件时，更改绑定的数据值
+    // 3.更改数据后，同步input的value的值
+    Vue.directive('mymodel', {
+      bind(el, binding, vnode) {
+        const vm = vnode.context;
+        const { value, expression } = binding;
+        el.value = value;
+        el.oninput = function () {
+          const inputVal = el.value;
+          vm[expression] = inputVal;
+        }
+      },
+      update(el, binding) {
+        const { value } = binding;
+        el.value = value;
+      }
+    })
+    
+    // 自定义指令
+    // 截取input框的文字
+    // v-slice.number:5
+    Vue.directive('slice',(el, binding, vnode) => {
+        const vm = vnode.context;
+        let { value, expression, arg, modifiers } = binding;
+        arg = arg || 5;
+        if (modifiers.number) {
+          value = value.replace(/[^0-9]/g, '')
+        }
+        el.value = value.slice(0, arg);
+        vm[expression] = value.slice(0, arg);
+        el.oninput = function () {
+          let { value } = el;
+          if (modifiers.number) {
+          value = value.replace(/[^0-9]/g, '')
+        }
+          vm[expression] = value.slice(0, arg);
+          el.value = value.slice(0, arg);
+        }
+    })
+    const vm = new Vue({
       el: '#app',
       data() {
         return {
-          name: 'yang'
+          name: 'yang',
+          show: true,
+          content: 'qq1234567',
+          slicenum: 3
         }
-      },
-      methods: {
-        fn(name) {
-          console.log('名字：'+ name)
-        }
-      },
+      }
     })
   </script>
 </body>
