@@ -1,43 +1,67 @@
-<template>
-  <div id="app">
-    <BaseLevel :level="1">我是h1</BaseLevel>
-    <BaseLevel :level="2">我是h2</BaseLevel>
-    <BaseLevel :level="3">我是h3</BaseLevel>
-    <BaseLevel :level="4">我是h4</BaseLevel>
-    <BaseLevel :level="5">我是h5</BaseLevel>
-    <BaseLevel :level="6">我是h6</BaseLevel>
-    <BaseData></BaseData>
-    <BaseSlots v-slot="slotProps">
-    {{ slotProps.text }}
-    </BaseSlots>
-  </div>
-</template>
-
 <script>
-import BaseLevel from './components/BaseLevel'
-import BaseData from './components/BaseData'
-import BaseSlots from './components/BaseSlots'
-
+import BaseDemo from './components/BaseDemo'
 export default {
   name: 'App',
   components: {
-    BaseLevel,
-    BaseData,
-    BaseSlots
+    BaseDemo
   },
-  // 模拟插槽
-  render(h) {
-    return h('div', {
-      id: 'app'
-    }, [
-      h('base-slots', {
-        scopedSlots: {
-          default: function(props) {
-            return props.text
-          }
-        }
-      })
-    ])
+  data() {
+    return {
+      name: 'hello',
+      show: true,
+      num: 3,
+      content: 'v-model'
+    }
+  },
+  methods: {
+    vIf() {
+      if(this.num === 1) {
+        return <div>1</div>
+      } else if(this.num === 2) {
+        return <span>1</span>
+      } else {
+        return <p>{ this.num }</p>
+      }
+    },
+    handleClick(num) {
+      console.log(num)
+    }
+  },
+  mounted() {
+    console.log(this.$refs)
+  },
+  render() {
+     const scopedSlots = {
+      scopedSlots: {
+        default: props => <span>{ props.text }</span>,
+      }
+    };
+    return (
+      <div>
+        <div>{ this.name }</div>
+        <div domPropsInnerHTML="<a>a</a>"></div>
+        <div domPropsTextContent="<a>a</a>"></div>
+        <div v-show={ this.show }>show</div>
+        { true && <div>v-if</div> }
+        { this.show ? <div>div</div> : <span>span</span> }
+        { this.vIf() }
+        <ul>
+          { [1, 2, 3].map(item => <li key={ item } ref="li" refInFor={true}>{ item }</li>) }
+        </ul>
+        <div on-click={ this.handleClick }>点我</div>
+        <base-demo nativeOnClick={ this.handleClick }></base-demo>
+        <div on-click={ () => this.handleClick(1) }>点击</div>
+        <div class={['a', 'b']} style={ { fontSize: '14px', color: 'red' } }>v-bind</div>
+        <input type="text" ref="input" v-model={ this.content } />
+        { this.content }
+        <base-demo>
+          <div slot="default">默认插槽</div>
+          <div slot="header">具名header插槽</div>
+        </base-demo>
+        <base-demo {...scopedSlots}>
+        </base-demo>
+      </div>
+    )
   }
 }
 </script>
