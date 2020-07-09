@@ -1,17 +1,43 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <BaseLevel :level="1">我是h1</BaseLevel>
+    <BaseLevel :level="2">我是h2</BaseLevel>
+    <BaseLevel :level="3">我是h3</BaseLevel>
+    <BaseLevel :level="4">我是h4</BaseLevel>
+    <BaseLevel :level="5">我是h5</BaseLevel>
+    <BaseLevel :level="6">我是h6</BaseLevel>
+    <BaseData></BaseData>
+    <BaseSlots v-slot="slotProps">
+    {{ slotProps.text }}
+    </BaseSlots>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import BaseLevel from './components/BaseLevel'
+import BaseData from './components/BaseData'
+import BaseSlots from './components/BaseSlots'
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    BaseLevel,
+    BaseData,
+    BaseSlots
+  },
+  // 模拟插槽
+  render(h) {
+    return h('div', {
+      id: 'app'
+    }, [
+      h('base-slots', {
+        scopedSlots: {
+          default: function(props) {
+            return props.text
+          }
+        }
+      })
+    ])
   }
 }
 </script>
