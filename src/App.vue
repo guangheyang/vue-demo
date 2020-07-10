@@ -1,21 +1,38 @@
 <template>
   <div id="app">
-    <base-level :level="1" @click="handleClick">
-      <template #default="{ text }">
-        {{text}}
-        标题
-      </template>
-      <div>div</div>
-      <p>p</p>
-    </base-level>
+    <base-demo></base-demo>
+    <base-slide></base-slide>
+    <base-animate></base-animate>
+    <base-class></base-class>
+    <base-mix></base-mix>
+    <base-duration></base-duration>
+    <base-parent></base-parent>
+    <base-appear></base-appear>
+    <base-js></base-js>
   </div>
 </template>
 <script>
-import BaseLevel from './components/BaseLevel'
+import BaseDemo from './components/BaseDemo'
+import BaseSlide from './components/BaseSlide'
+import BaseAnimate from './components/BaseAnimate'
+import BaseClass from './components/BaseClass'
+import BaseMix from './components/BaseMix'
+import BaseDuration from './components/BaseDuration'
+import BaseParent from './components/BaseParent'
+import BaseAppear from './components/BaseAppear'
+import BaseJs from './components/BaseJs'
 export default {
   name: 'App',
   components: {
-    BaseLevel
+    BaseDemo,
+    BaseSlide,
+    BaseAnimate,
+    BaseClass,
+    BaseMix,
+    BaseDuration,
+    BaseParent,
+    BaseAppear,
+    BaseJs
   },
   provide() {
     return {
@@ -37,14 +54,10 @@ export default {
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style scoped>
+  #app {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
 </style>
