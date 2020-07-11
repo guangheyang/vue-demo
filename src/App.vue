@@ -1,27 +1,21 @@
 <template>
   <div id="app">
-    <button @click="handleClick">点击</button>
-    <base-demo>
-      <div v-if="show" key="default">hello world</div>
-      <div v-else key="name">hello yang</div>
-    </base-demo>
+    <button @click="show = true">点击</button>
+    <AsyncCmp1 v-if="show" />
+    <async-cmp-2 v-if="show" />
   </div>
 </template>
 <script>
-import BaseDemo from './components/BaseDemo'
+// import AsyncCmp from './components/AsyncCmp'
 export default {
   name: 'App',
   components: {
-    BaseDemo
+    AsyncCmp1: () => import(/* webpackChunkName: 'async' */ './components/AsyncCmp1'),
+    AsyncCmp2: () => import(/* webpackChunkName: 'async' */ './components/AsyncCmp2')
   },
   data() {
     return {
-      show: true
-    }
-  },
-  methods: {
-    handleClick() {
-      this.show = !this.show
+      show: false
     }
   }
 }
