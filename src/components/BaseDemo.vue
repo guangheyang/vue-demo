@@ -1,10 +1,10 @@
 <template>
   <div class="demo">
     <button @click="handleClick">Click</button>
-    <transition>
+    <transition-group>
       <div class="box" v-if="show" key="default">Hello World</div>
-      <div class="box" v-else key="name">Hello yang</div>
-    </transition>
+      <div class="box" v-if="show" key="name">Hello yang</div>
+    </transition-group>
   </div>
 </template>
 <script>
