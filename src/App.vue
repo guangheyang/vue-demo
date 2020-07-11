@@ -1,23 +1,28 @@
 <template>
   <div id="app">
-    <base-demo></base-demo>
-    <base-list></base-list>
-    <base-query></base-query>
-    <base-js></base-js>
+    <button @click="handleClick">点击</button>
+    <base-demo>
+      <div v-if="show" key="default">hello world</div>
+      <div v-else key="name">hello yang</div>
+    </base-demo>
   </div>
 </template>
 <script>
 import BaseDemo from './components/BaseDemo'
-import BaseList from './components/BaseList'
-import BaseQuery from './components/BaseQuery'
-import BaseJs from './components/BaseJs'
 export default {
   name: 'App',
   components: {
-    BaseDemo,
-    BaseList,
-    BaseQuery,
-    BaseJs
+    BaseDemo
+  },
+  data() {
+    return {
+      show: true
+    }
+  },
+  methods: {
+    handleClick() {
+      this.show = !this.show
+    }
   }
 }
 </script>

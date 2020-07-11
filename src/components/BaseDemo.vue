@@ -1,48 +1,31 @@
-<template>
-  <div class="demo">
-    <button @click="handleClick">Click</button>
-    <transition-group>
-      <div class="box" v-if="show" key="default">Hello World</div>
-      <div class="box" v-if="show" key="name">Hello yang</div>
-    </transition-group>
-  </div>
-</template>
 <script>
+// <template>
+//     <transition>
+//       <slot></slot>
+//     </transition>
+// </template>
 export default {
-  data() {
-    return {
-      show: true
-    }
-  },
-  methods: {
-    handleClick() {
-      this.show = !this.show
-    }
+  functional: true,
+  render(h, context) {
+    const { slots } = context
+    return (
+    <transition name="single">
+      { slots().default }
+    </transition>)
   }
 }
 </script>
-<style scoped>
-  button {
-    margin-bottom: 10px;
-  }
-  .box {
-    width: 100px;
-    height: 100px;
-    line-height: 100px;
-    text-align: center;
-    border: 1px solid red;
-    color: red;
-  }
-  .v-enter,
-  .v-leave-to {
+<style>
+  .single-enter,
+  .single-leave-to {
     opacity: 0;
   }
-  .v-enter-active,
-  .v-leave-active {
+  .single-enter-active,
+  .single-leave-active {
     transition: opacity .5s;
   }
-  .v-enter-to,
-  .v-leave {
+  .single-enter-to,
+  .single-leave {
     opacity: 1;
   }
 </style>
