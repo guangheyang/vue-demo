@@ -9,6 +9,7 @@
     <base-parent></base-parent>
     <base-appear></base-appear>
     <base-js></base-js>
+    <!-- <base-velocity></base-velocity> -->
   </div>
 </template>
 <script>
@@ -21,6 +22,7 @@ import BaseDuration from './components/BaseDuration'
 import BaseParent from './components/BaseParent'
 import BaseAppear from './components/BaseAppear'
 import BaseJs from './components/BaseJs'
+// import BaseVelocity from './components/BaseVelocity'
 export default {
   name: 'App',
   components: {
@@ -32,7 +34,8 @@ export default {
     BaseDuration,
     BaseParent,
     BaseAppear,
-    BaseJs
+    BaseJs,
+    // BaseVelocity
   },
   provide() {
     return {
