@@ -1,66 +1,26 @@
 <template>
   <div id="app">
     <base-demo></base-demo>
-    <base-slide></base-slide>
-    <base-animate></base-animate>
-    <base-class></base-class>
-    <base-mix></base-mix>
-    <base-duration></base-duration>
-    <base-parent></base-parent>
-    <base-appear></base-appear>
-    <base-js></base-js>
-    <!-- <base-velocity></base-velocity> -->
+    <base-key-name></base-key-name>
+    <base-mode></base-mode>
+    <base-mode-2></base-mode-2>
+    <base-component></base-component>
   </div>
 </template>
 <script>
 import BaseDemo from './components/BaseDemo'
-import BaseSlide from './components/BaseSlide'
-import BaseAnimate from './components/BaseAnimate'
-import BaseClass from './components/BaseClass'
-import BaseMix from './components/BaseMix'
-import BaseDuration from './components/BaseDuration'
-import BaseParent from './components/BaseParent'
-import BaseAppear from './components/BaseAppear'
-import BaseJs from './components/BaseJs'
-// import BaseVelocity from './components/BaseVelocity'
+import BaseKeyName from './components/BaseKeyName'
+import BaseMode from './components/BaseMode'
+import BaseMode2 from './components/BaseMode2'
+import BaseComponent from './components/BaseComponent'
 export default {
   name: 'App',
   components: {
     BaseDemo,
-    BaseSlide,
-    BaseAnimate,
-    BaseClass,
-    BaseMix,
-    BaseDuration,
-    BaseParent,
-    BaseAppear,
-    BaseJs,
-    // BaseVelocity
-  },
-  provide() {
-    return {
-      name: 'yang'
-    }
-  },
-  data() {
-    return {
-      name: 'hello',
-      show: true,
-      num: 3,
-      content: 'v-model'
-    }
-  },
-  methods: {
-    handleClick() {
-      console.log('click')
-    }
+    BaseKeyName,
+    BaseMode,
+    BaseMode2,
+    BaseComponent
   }
 }
 </script>
-<style scoped>
-  #app {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-  }
-</style>

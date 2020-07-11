@@ -1,11 +1,8 @@
 <template>
   <div class="demo">
     <button @click="handleClick">Click</button>
-    <transition
-        enter-active-class="animate__animated animate__bounceInRight"
-        leave-active-class="animate__animated animate__bounceOutDown"
-    >
-      <div class="box" v-if="show">Class</div>
+    <transition mode="out-in">
+        <div class="box" :key="keyName">Hello {{ keyName }}</div>
     </transition>
   </div>
 </template>
@@ -13,12 +10,13 @@
 export default {
   data() {
     return {
-      show: true
+      keyName: 'mode'
     }
   },
   methods: {
     handleClick() {
-      this.show = !this.show
+      const isWorld = this.keyName === 'mode'
+      this.keyName = isWorld ? 'out-in' : 'mode'
     }
   }
 }
@@ -34,5 +32,17 @@ export default {
     text-align: center;
     border: 1px solid red;
     color: red;
+  }
+  .v-enter,
+  .v-leave-to {
+    opacity: 0;
+  }
+  .v-enter-active,
+  .v-leave-active {
+    transition: opacity .5s;
+  }
+  .v-enter-to,
+  .v-leave {
+    opacity: 1;
   }
 </style>

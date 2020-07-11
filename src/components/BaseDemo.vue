@@ -2,7 +2,8 @@
   <div class="demo">
     <button @click="handleClick">Click</button>
     <transition>
-      <div class="box" v-if="show">Hello World</div>
+      <div class="box" v-if="show" key="default">Hello World</div>
+      <div class="box" v-else key="name">Hello yang</div>
     </transition>
   </div>
 </template>
@@ -32,22 +33,16 @@ export default {
     border: 1px solid red;
     color: red;
   }
-  .v-enter {
+  .v-enter,
+  .v-leave-to {
     opacity: 0;
   }
-  .v-enter-active {
-    transition: opacity .5s;
-  }
-  .v-enter-to {
-    opacity: 1;
-  }
-  .v-leave {
-    opacity: 1;
-  }
+  .v-enter-active,
   .v-leave-active {
     transition: opacity .5s;
   }
-  .v-leave-to {
-    opacity: 0;
+  .v-enter-to,
+  .v-leave {
+    opacity: 1;
   }
 </style>

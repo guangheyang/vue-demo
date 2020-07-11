@@ -1,12 +1,8 @@
 <template>
   <div class="demo">
     <button @click="handleClick">Click</button>
-    <transition
-        type="animation"
-        enter-active-class="animate__animated animate__tada v-enter-active"
-        leave-active-class="animate__animated animate__tada v-leave-active"
-    >
-      <div class="box" v-if="show">Mix</div>
+    <transition>
+        <div class="box" :key="keyName">Hello {{ keyName }}</div>
     </transition>
   </div>
 </template>
@@ -14,12 +10,13 @@
 export default {
   data() {
     return {
-      show: true
+      keyName: 'key'
     }
   },
   methods: {
     handleClick() {
-      this.show = !this.show
+      const isWorld = this.keyName === 'key'
+      this.keyName = isWorld ? 'Yang' : 'key'
     }
   }
 }
@@ -39,15 +36,13 @@ export default {
   .v-enter,
   .v-leave-to {
     opacity: 0;
-    transform: translateY(200px);
   }
   .v-enter-active,
   .v-leave-active {
-    transition: all 10s;
+    transition: opacity .5s;
   }
   .v-enter-to,
   .v-leave {
     opacity: 1;
-    transform: translateY(0px);
   }
 </style>
