@@ -24,7 +24,7 @@ const routes = [
   },
   {
     path: '/activity',
-    component: () => import('./views/Activity'),
+    component: () => import(/* webpackChunkName: 'academic' */ './views/Activity'),
     // redirect: '/activity/academic', // 使用路径
     // redirect: { name: 'academic' }, // 使用命名
     redirect(to) { // 使用函数
@@ -42,7 +42,7 @@ const routes = [
       {
         path: '/activity/academic',
         name: 'academic',
-        component: () => import('./views/Academic')
+        component: () => import(/* webpackChunkName: 'academic' */ './views/Academic')
       },
       {
         path: 'personal',

@@ -1,7 +1,9 @@
 <template>
   <div id="app">
     <div class="nav-box">
-      <div class="logo">Vue路由</div>
+      <div class="logo" @click="handleClick">Vue路由</div>
+      <!-- 声明式的导航 -->
+      <!-- <router-link tag="div" class="logo" to="/home">Vue路由</router-link> -->
       <div class="nav-list">
         <router-link to="/home">首页</router-link>
         <router-link to="/learn">课程学习</router-link>
@@ -25,6 +27,15 @@ export default {
   data() {
     return {
       show: false
+    }
+  },
+  methods: {
+    handleClick() {
+      console.log(this.$router, 'router')
+      console.log(this.$route, 'route')
+      this.$router.push('/home')
+      // this.$router.replace('/home')
+      // this.$router.go(1)
     }
   }
 }
