@@ -3,7 +3,7 @@
     <div class="nav-box">
       <div class="logo">Vue路由</div>
       <div class="nav-list">
-        <router-link to="/">首页</router-link>
+        <router-link to="/home">首页</router-link>
         <router-link to="/learn">课程学习</router-link>
         <router-link to="/student">学员展示</router-link>
         <router-link to="/about">关于</router-link>
@@ -46,7 +46,7 @@ export default {
     color: #fff;
     text-decoration: none;
   }
-  .nav-list a.link-exact-active {
+  .nav-list a.link-active {
     font-weight: bold;
   }
   .container {
