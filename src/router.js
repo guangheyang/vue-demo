@@ -57,8 +57,13 @@ const routes = [
     ]
   },
   {
-    path: '/about',
+    path: '/about/:id',
     component: () => import('./views/About') 
+  },
+  {
+    path: '/question/:id',
+    name: 'question',
+    component: () => import('./views/Question')
   }
 ]
 export default new VueRouter({
