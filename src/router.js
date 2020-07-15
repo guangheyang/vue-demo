@@ -16,7 +16,10 @@ const routes = [
   },
   {
     path: '/learn',
-    component: () => import('./views/Learn') 
+    components: {
+      default: () => import('./views/Learn'),
+      student: () => import('./views/Student')
+    }
   },
   {
     path: '/student',
@@ -63,6 +66,17 @@ const routes = [
   {
     path: '/question/:id',
     name: 'question',
+    // props: true,
+    // 对象的方式
+    // props: {
+    //   id: 90878976
+    // },
+
+    // 函数式
+    props: route => ({
+      name: route.name,
+      id: route.params.id
+    }),
     component: () => import('./views/Question')
   }
 ]
