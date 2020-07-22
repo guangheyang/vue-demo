@@ -28,9 +28,9 @@ export default {
       question: null,
     }
   },
-  beforeUpdate(to, from, next) {
-    console.log(to, from ,next)
-    console.log('update')
+  beforeRouteLeave (to, from, next) {
+    const isGo = window.confirm('真的要走吗？不在看看了！')
+    isGo ? next() : next(false)
   },
   computed: {
     otherQuestionList () {

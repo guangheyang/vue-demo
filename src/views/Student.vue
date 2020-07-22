@@ -7,7 +7,6 @@
 <script>
 export default {
   beforeRouteEnter(to, from ,next) {
-    console.log(to, from ,next)
     // next()
 
     next(vm => {
@@ -15,7 +14,6 @@ export default {
     })
   },
   beforeRouteLeave (to, from, next) {
-    console.log(to, from ,next)
     console.log('beforeRouteLeave')
     next()
   },

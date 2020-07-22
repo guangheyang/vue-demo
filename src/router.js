@@ -1,103 +1,115 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Home from './views/Home';
+import auth from './utils/auth';
 
-import Home from './views/Home'
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 const routes = [
   {
     path: '/',
-    redirect: '/home'
+    redirect: '/home',
   },
   {
     path: '/home',
     component: Home,
-    // alias: '/' // 别名
+    // alias: '/',
   },
   {
     path: '/learn',
+    // component: () => import('./views/Learn'),
     components: {
       default: () => import('./views/Learn'),
-      student: () => import('./views/Student')
-    }
+      student: () => import('./views/Student'),
+    },
   },
   {
     path: '/student',
     component: () => import('./views/Student'),
-    // beforeEnter (to, from, next) {
-    //   console.log(to, from ,next)
-    //   next()
-    // }
+  },
+  {
+    path: '/about',
+    component: () => import('./views/About'),
+    beforeEnter (to, from, next) {
+      next();
+    },
+    meta: {
+      requiresLogin: true,
+      backAsk: true,
+    },
   },
   {
     path: '/activity',
-    component: () => import('./views/Activity'),
-    redirect(to) {
-      console.log(to)
+    component: () => import(/* webpackChunkName: 'academic' */'./views/Activity'),
+    redirect () {
       return {
-        name: 'academic'
+        name: 'academic',
       }
+    },
+    meta: {
+      requiresLogin: true,
+      backAsk: true,
     },
     children: [
       {
-        path: '/activity/academic',
+        path: 'academic',
         name: 'academic',
-        component: () => import('./views/Academic')
+        component: () => import(/* webpackChunkName: 'academic' */'./views/Academic'),
       },
       {
         path: 'personal',
         name: 'personal',
-        component: () => import('./views/Personal')
+        component: () => import('./views/Personal'),
       },
       {
         path: 'download',
         name: 'download',
-        component: () => import('./views/Download')
-      }
-    ]
+        component: () => import('./views/Download'),
+      },
+    ],
   },
   {
-    path: '/about/:id',
-    component: () => import('./views/About')
+    path: '/course/:userId',
+    component: () => import('./views/About'),
   },
   {
     path: '/question/:id',
     name: 'question',
+    // props: true,
     props: route => ({
-      name: route.name,
-      id: route.params.id
+      // name: route.name,
+      id: route.params.id 
     }),
-    component: () => import('./views/Question')
+    component: () => import('./views/Question'),
+  },
+  {
+    path: '/login',
+    component: () => import('./views/Login'),
   }
-]
-const router =  new VueRouter({
-  routes,
+];
+
+const router = new VueRouter({
   mode: 'history',
-  linkActiveClass: 'link-active',
-  linkExactActiveClass: 'link-exact-active'
-})
+  routes,
+});
 
 router.beforeEach((to, from, next) => {
-  // console.log(to, from, next())
-  // if (to.path === '/student') {
-    // next('/about')
-  // } else {
-    next()
-    // 抛出异常
-    // next(new Error('不让跳转'))
-  // }
-})
+  const isRequiresLogin = to.matched.some(item => item.meta.requiresLogin);
 
-router.beforeResolve((to, from, next) => {
-  console.log(to, from, next())
-  // next()
-})
+  if(isRequiresLogin) {
+    const isLogin = auth.isLogin();
+    if(isLogin) {
+      next();
+    } else {
+      const isToLogin = window.confirm('要登录后才可以浏览，要去登录吗？');
 
-// router.afterEach((to, from) => {
+      isToLogin ? next('/login') : next(false);
+    }
+  } else {
+    next();
+  }
 
-// })
-// router.onError(err => {
-//   console.log(err.message)
-// })
+  // const from.meta.backAsk
+});
 
 export default router;
