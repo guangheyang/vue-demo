@@ -28,8 +28,9 @@ export default {
       question: null,
     }
   },
-  mounted () {
-    
+  beforeUpdate(to, from, next) {
+    console.log(to, from ,next)
+    console.log('update')
   },
   computed: {
     otherQuestionList () {

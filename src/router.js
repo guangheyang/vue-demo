@@ -23,25 +23,22 @@ const routes = [
   },
   {
     path: '/student',
-    component: () => import('./views/Student') 
+    component: () => import('./views/Student'),
+    // beforeEnter (to, from, next) {
+    //   console.log(to, from ,next)
+    //   next()
+    // }
   },
   {
     path: '/activity',
     component: () => import('./views/Activity'),
-    // redirect: '/activity/academic', // 使用路径
-    // redirect: { name: 'academic' }, // 使用命名
-    redirect(to) { // 使用函数
+    redirect(to) {
       console.log(to)
       return {
         name: 'academic'
       }
     },
     children: [
-      // 使用重定向就不要使用空字符串的形式
-      // {
-      //   path: '',
-      //   component: () => import('./views/Academic')
-      // },
       {
         path: '/activity/academic',
         name: 'academic',
@@ -61,18 +58,11 @@ const routes = [
   },
   {
     path: '/about/:id',
-    component: () => import('./views/About') 
+    component: () => import('./views/About')
   },
   {
     path: '/question/:id',
     name: 'question',
-    // props: true,
-    // 对象的方式
-    // props: {
-    //   id: 90878976
-    // },
-
-    // 函数式
     props: route => ({
       name: route.name,
       id: route.params.id
@@ -80,9 +70,34 @@ const routes = [
     component: () => import('./views/Question')
   }
 ]
-export default new VueRouter({
+const router =  new VueRouter({
   routes,
   mode: 'history',
   linkActiveClass: 'link-active',
   linkExactActiveClass: 'link-exact-active'
 })
+
+router.beforeEach((to, from, next) => {
+  // console.log(to, from, next())
+  // if (to.path === '/student') {
+    // next('/about')
+  // } else {
+    next()
+    // 抛出异常
+    // next(new Error('不让跳转'))
+  // }
+})
+
+router.beforeResolve((to, from, next) => {
+  console.log(to, from, next())
+  // next()
+})
+
+// router.afterEach((to, from) => {
+
+// })
+// router.onError(err => {
+//   console.log(err.message)
+// })
+
+export default router;
