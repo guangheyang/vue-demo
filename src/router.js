@@ -91,6 +91,22 @@ const routes = [
 const router = new VueRouter({
   mode: 'history',
   routes,
+  scrollBehavior(to, from, savedPosition) {
+    console.log(to, from, savedPosition)
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      if(to.hash) {
+        console.log(to.hash, 'hash')
+        return { selector: to.hash }
+      } else {
+        return {
+          x: 0,
+          y: 0
+        }
+      }
+    }
+  }
 });
 
 router.beforeEach((to, from, next) => {
