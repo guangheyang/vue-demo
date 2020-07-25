@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <span onclick="routerChange('/')">首页</span>
+    <a href="#/about">关于</a>
+    <a onclick="routerClick('/student')">学员</a>
+    <div id="view"></div>
+</body>
+</html>
+
+<script>
+    // hash模式
+    // 利用a元素处理hash
+    document.addEventListener('DOmcontentLoaded', () => {
+        view.innerHTML = location.hash.slice(1)
+    })
+
+    // 监听hash改变事件
+    window.addEventListener('hashchange', () => {
+        console.log(location)
+        view.innerHTML = location.hash.slice(1)
+    })
+
+    // 不为a元素处理hash
+    function routerChange(pathName) {
+        location.hash = pathName
+    }
+
+    // history模式
+    function routerClick(pathName) {
+        history.pushState(null, null, pathName)
+        view.innerHTML = pathName
+    }
+
+    // 监听浏览器前进后退事件
+    window.addEventListener('popstate', () => {
+        console.log('xxx')
+    })
+</script>
