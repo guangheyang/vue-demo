@@ -1,29 +1,38 @@
 export default {
     props: {
-        to: {
-            type: String,
-            required: true
-        },
-        tag: {
-            type: String,
-            default: 'a'
-        }
+      to: {
+        type: String,
+        required: true,
+      },
+      tag: {
+        type: String,
+        default: 'a',
+      }
     },
     methods: {
-        handleClick() {
-            location.hash = this.to
-        }
-    },
-    render(h) {
-        const data = {}
-        const to = this.to
-
-        if (this.tag === 'a') {
-            const href = '#' + to
-            data.attrs = { href }
+      handleClick () {
+        const mode = this.$router.mode;
+  
+        if(mode === 'hash') {
+          location.hash = this.to;
         } else {
-            data.on = { click: this.handleClick }
+          history.pushState(null, null, this.to);
+          this.$router.history.current.path = this.to;
         }
-        return h(this.tag, data, this.$slots.default)
+      }
+    },
+    render (h) {
+      const data = {};
+      const to = this.to;
+      const mode = this.$router.mode;
+  
+      if(this.tag === 'a' && mode === 'hash') {
+        const href = '#' + to;
+        data.attrs = { href };
+      } else {
+        data.on = { click: this.handleClick };
+      }
+  
+      return h(this.tag, data, this.$slots.default);
     }
-}
+  };
