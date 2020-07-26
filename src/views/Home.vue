@@ -2,7 +2,7 @@
   <div class="home">
     首页
     <button @click="handleClick">点击</button>
-    {{ storeCount }}
+    {{ storeCount.count }}
     {{ doubleCount }}
     {{ addCount(3) }}
     {{ obj }}
@@ -22,10 +22,10 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['COUNT_INCREMENT']),
+    ...mapMutations('count', ['COUNT_INCREMENT']),
     handleClick() {
       const num = Math.floor(Math.random() * 100)
-      this.$store.dispatch('countIncrement', {num}).then(() => {
+      this.$store.dispatch('count/countIncrement', {num}).then(() => {
         alert('count已增加')
       })
       this.$store.commit(CHANGE_OBJ)
@@ -35,11 +35,11 @@ export default {
     }
   },
   computed: {
-    ...mapState({
+    ...mapState('count', {
       storeCount: 'count',
       obj: 'obj',
     }),
-    ...mapGetters(['doubleCount', 'addCount']),
+    ...mapGetters('count', ['doubleCount', 'addCount']),
     msg: {
       get() {
         return this.$store.state.msg
