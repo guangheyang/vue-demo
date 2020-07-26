@@ -1,6 +1,8 @@
-VueRouter_路由元信息
+# VueRouter_路由元信息
+
 定义路由的时候可以配置 meta 字段，用于自定义一些信息。
 
+```js
 const router = new VueRouter({
   routes: [
     {
@@ -16,3 +18,4 @@ const router = new VueRouter({
     }
   ]
 })
+```
