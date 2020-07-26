@@ -19,24 +19,29 @@ const store = new Vuex.Store({
     studentJuveniles: state => state.studentList.filter(item => item.age < 18)
   },
   mutations: {
-    // countIncrement(state, { num }) {
-    //   state.count += num
-    // }
-    
-    // // 对象风格
-    // countIncrement(state, payload) {
-    //   state.count += payload.num
-    // }
-
-    [COUNT_INCREMENT](state, num) {
-      state.count += num
+    [COUNT_INCREMENT](state, payload) {
+      console.log(payload.num, 'num')
+      state.count += payload.num
     },
     [CHANGE_OBJ](state) {
       Vue.set(state.obj, 'b', 10)
-      // state.obj = { ...state.obj, b: 1 }
     },
     [UPDATE_MSG](state, {value}) {
       state.msg = value
+    }
+  },
+  actions: {
+    countIncrement(context, payload) {
+      console.log(payload, 'payload')
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          context.commit(COUNT_INCREMENT, payload)
+          resolve()
+        }, 1000)
+      })
+      // setTimeout(() => {
+      //   context.commit(COUNT_INCREMENT, payload)
+      // }, 1000)
     }
   }
 })
