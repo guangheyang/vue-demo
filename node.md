@@ -34,7 +34,7 @@ watch: {
 }
 
 // 更改msg的值
-vm.msg = 'hello~~~~'; // 此时会在控制台中打印出`hello，你好呀，我是杉杉  hello~~~~`
+vm.msg = 'hello~~~~'; // 此时会在控制台中打印出`hello~~~~  hello，你好呀，我是杉杉`
 ```
 
 ### 字符串类型
@@ -65,7 +65,7 @@ vm.msg = 'hello'; // 此时msgChange函数会执行，控制台中打印出 ` ms
 
 #### handler
 
-必需。handler时被侦听的数据改变时执行的回调函数。
+必需。handler是被侦听的数据改变时执行的回调函数。
 handler的值类型为函数/字符串，写成字符串时为一个方法的名字。
 
 ```js
